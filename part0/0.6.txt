@@ -1,0 +1,10 @@
+title Create note SPA
+
+note over browser:
+browser executes the event handler
+that renders notes to display then
+sends new note to server
+end note
+
+browser->server: HTTP POST {content: "New note", date: "2021-02-15T11:57:01.658Z"}
+server-->browser: [{"message":"note created"}]
