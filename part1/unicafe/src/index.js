@@ -16,17 +16,24 @@ const Scoreboard = ({ score, text }) => {
 
 const Statistics = ({ good, bad, neutral }) => {
   let total = good + bad + neutral;
-  let averageScore = (good - bad) / total || 0;
-  let positivePercent = (100 * good) / total || 0;
+
+  if (total) {
+    return (
+      <>
+        <h1>statistics</h1>
+        <Scoreboard score={good} text="good" />
+        <Scoreboard score={neutral} text="neutral" />
+        <Scoreboard score={bad} text="bad" />
+        <Scoreboard score={(good - bad) / total} text="average" />
+        <Scoreboard score={(100 * good) / total} text="positive" />
+      </>
+    );
+  }
 
   return (
     <>
       <h1>statistics</h1>
-      <Scoreboard score={good} text="good" />
-      <Scoreboard score={neutral} text="neutral" />
-      <Scoreboard score={bad} text="bad" />
-      <Scoreboard score={averageScore} text="average" />
-      <Scoreboard score={positivePercent} text="positive" />
+      <p>No feedback given</p>
     </>
   );
 };
