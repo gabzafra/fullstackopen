@@ -9,6 +9,7 @@ const Scoreboard = ({ score, text }) => {
   return (
     <p>
       {text} {score}
+      {text === "positive" ? " %" : ""}
     </p>
   );
 };
@@ -32,6 +33,15 @@ const App = () => {
     }
   };
 
+  const averageScore = () => {
+    let total = good + bad + neutral;
+    return total ? (good - bad) / total : 0;
+  };
+
+  const positivePercent = () => {
+    let total = good + bad + neutral;
+    return total && good ? (100 * good) / total : 0;
+  };
   return (
     <div>
       <h1>give feedback</h1>
@@ -42,6 +52,8 @@ const App = () => {
       <Scoreboard score={good} text="good" />
       <Scoreboard score={neutral} text="neutral" />
       <Scoreboard score={bad} text="bad" />
+      <Scoreboard score={averageScore()} text="average" />
+      <Scoreboard score={positivePercent()} text="positive" />
     </div>
   );
 };
