@@ -14,6 +14,23 @@ const Scoreboard = ({ score, text }) => {
   );
 };
 
+const Statistics = ({ good, bad, neutral }) => {
+  let total = good + bad + neutral;
+  let averageScore = (good - bad) / total || 0;
+  let positivePercent = (100 * good) / total || 0;
+
+  return (
+    <>
+      <h1>statistics</h1>
+      <Scoreboard score={good} text="good" />
+      <Scoreboard score={neutral} text="neutral" />
+      <Scoreboard score={bad} text="bad" />
+      <Scoreboard score={averageScore} text="average" />
+      <Scoreboard score={positivePercent} text="positive" />
+    </>
+  );
+};
+
 const App = () => {
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
@@ -33,27 +50,13 @@ const App = () => {
     }
   };
 
-  const averageScore = () => {
-    let total = good + bad + neutral;
-    return total ? (good - bad) / total : 0;
-  };
-
-  const positivePercent = () => {
-    let total = good + bad + neutral;
-    return total && good ? (100 * good) / total : 0;
-  };
   return (
     <div>
       <h1>give feedback</h1>
       <Button handleClick={addFeedback("good")} text="good" />
       <Button handleClick={addFeedback("neutral")} text="neutral" />
       <Button handleClick={addFeedback("bad")} text="bad" />
-      <h1>statistics</h1>
-      <Scoreboard score={good} text="good" />
-      <Scoreboard score={neutral} text="neutral" />
-      <Scoreboard score={bad} text="bad" />
-      <Scoreboard score={averageScore()} text="average" />
-      <Scoreboard score={positivePercent()} text="positive" />
+      <Statistics good={good} bad={bad} neutral={neutral} />
     </div>
   );
 };
