@@ -5,10 +5,10 @@ const Button = ({ handleClick, text }) => {
   return <button onClick={handleClick}>{text}</button>;
 };
 
-const Scoreboard = ({ score, text }) => {
+const Statistic = ({ value, text }) => {
   return (
     <p>
-      {text} {score}
+      {text} {value}
       {text === "positive" ? " %" : ""}
     </p>
   );
@@ -21,11 +21,11 @@ const Statistics = ({ good, bad, neutral }) => {
     return (
       <>
         <h1>statistics</h1>
-        <Scoreboard score={good} text="good" />
-        <Scoreboard score={neutral} text="neutral" />
-        <Scoreboard score={bad} text="bad" />
-        <Scoreboard score={(good - bad) / total} text="average" />
-        <Scoreboard score={(100 * good) / total} text="positive" />
+        <Statistic value={good} text="good" />
+        <Statistic value={neutral} text="neutral" />
+        <Statistic value={bad} text="bad" />
+        <Statistic value={(good - bad) / total} text="average" />
+        <Statistic value={(100 * good) / total} text="positive" />
       </>
     );
   }
