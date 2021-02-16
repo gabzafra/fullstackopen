@@ -19,12 +19,23 @@ const App = ({ anecdotes }) => {
     setPoints(newArr);
   };
 
+  let mostVotedIndex = points.reduce(
+    (acc, votes, idx) => (votes > acc.max ? { max: votes, index: idx } : acc),
+    { max: 0, index: 0 }
+  ).index;
+
+  console.log(mostVotedIndex);
+
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <p>{anecdotes[selected]}</p>
       <p>has {points[selected]} votes</p>
       <Button clickHandler={handleVote} text="vote" />
       <Button clickHandler={handleNext} text="next anecdote" />
+      <h1>Anecdote with most votes</h1>
+      <p>{anecdotes[mostVotedIndex]}</p>
+      <p>has {points[mostVotedIndex]} votes</p>
     </div>
   );
 };
