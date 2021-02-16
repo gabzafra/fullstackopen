@@ -1,25 +1,20 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 
-const Display = ({ counter }) => <div>{counter}</div>;
-
-const Button = ({ handleClick, text }) => (
-  <button onClick={handleClick}>{text}</button>
-);
-
 const App = () => {
-  const [counter, setCounter] = useState(0);
-
-  const increaseByOne = () => setCounter(counter + 1);
-  const decreaseByOne = () => setCounter(counter > 0 ? counter - 1 : counter);
-  const setToZero = () => setCounter(0);
+  const [left, setLeft] = useState(0);
+  const [right, setRight] = useState(0);
 
   return (
     <div>
-      <Display counter={counter} />
-      <Button handleClick={increaseByOne} text="plus" />
-      <Button handleClick={setToZero} text="zero" />
-      <Button handleClick={decreaseByOne} text="minus" />
+      {left}
+      <button onClick={() => setLeft(left + 1)}>
+        left
+      </button>
+      <button onClick={() => setRight(right + 1)}>
+        right
+      </button>
+      {right}
     </div>
   );
 };
