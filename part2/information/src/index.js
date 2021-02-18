@@ -17,11 +17,18 @@ const Part = ({ content }) => (
   </p>
 );
 
+const Total = ({ course }) => (
+  <p style={{ fontWeight: "bold" }}>
+    total of {course.reduce((x, part) => x + part.exercises, 0)} exercises
+  </p>
+);
+
 const Course = ({ course }) => {
   return (
     <div>
       <Header course={course.name} />
       <Content parts={course.parts} />
+      <Total course={course.parts} />
     </div>
   );
 };
