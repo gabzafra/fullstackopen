@@ -19,7 +19,7 @@ const Part = ({ content }) => (
 
 const Total = ({ course }) => (
   <p style={{ fontWeight: "bold" }}>
-    total of {course.reduce((x, part) => x + part.exercises, 0)} exercises
+    total of {course.reduce((a, part) => a + part.exercises, 0)} exercises
   </p>
 );
 
