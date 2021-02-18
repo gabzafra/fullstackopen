@@ -30,7 +30,7 @@ const App = () => {
       ) : filteredList.length === 1 ? (
         <CountryDetail country={filteredList[0]} />
       ) : (
-        <CountryList countries={filteredList} />
+        <CountryList countries={filteredList} filterHandler={handleSearchChange}/>
       )}
     </div>
   );
