@@ -19,6 +19,7 @@ const App = (props) => {
   };
 
   const handleNoteChange = (event) => {
+
     setNewNote(event.target.value);
   };
 
