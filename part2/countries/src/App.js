@@ -7,6 +7,7 @@ import CountryDetail from "./components/CountryDetail";
 const App = () => {
   const [countries, setCountries] = useState([]);
   const [newSearch, setNewSearch] = useState("");
+  const [weather, setWeather] = useState(null);
 
   useEffect(() => {
     axios.get("https://restcountries.eu/rest/v2/all").then((response) => {
@@ -18,7 +19,11 @@ const App = () => {
     country.name.toUpperCase().startsWith(newSearch.trim().toUpperCase())
   );
 
+  const handleWeather = (weather) => {
+    setWeather(weather);
+  };
   const handleSearchChange = (event) => {
+    setWeather(null);
     setNewSearch(event.target.value);
   };
 
@@ -28,9 +33,16 @@ const App = () => {
       {filteredList.length > 10 ? (
         <p>Too many matches, specify another filter</p>
       ) : filteredList.length === 1 ? (
-        <CountryDetail country={filteredList[0]} />
+        <CountryDetail
+          country={filteredList[0]}
+          weather={weather}
+          weatherHandler={handleWeather}
+        />
       ) : (
-        <CountryList countries={filteredList} filterHandler={handleSearchChange}/>
+        <CountryList
+          countries={filteredList}
+          filterHandler={handleSearchChange}
+        />
       )}
     </div>
   );
