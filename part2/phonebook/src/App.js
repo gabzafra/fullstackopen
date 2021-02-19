@@ -49,6 +49,7 @@ const App = () => {
       ) {
         personService.update(oldPerson.id, personObj).then((returnedPerson) => {
           if (returnedPerson.hasOwnProperty("message")) {
+            setPersons(persons.filter((p) => p.id !== oldPerson.id));
             setErrorMessage({ text: null, type: null });
             setErrorMessage({ text: returnedPerson.message, type: "error" });
             setTimeout(() => setErrorMessage({ text: null, type: null }), 5000);
@@ -85,7 +86,10 @@ const App = () => {
         if (status === 200) {
           setPersons(persons.filter((p) => p.id !== id));
         } else {
-          alert(`Deletion of ${name} failed `);
+          setPersons(persons.filter((p) => p.id !== id));
+          setErrorMessage({ text: null, type: null });
+          setErrorMessage({ text: `Information of ${name} has already been removed from server `, type: "error" });
+          setTimeout(() => setErrorMessage({ text: null, type: null }), 5000);
         }
       });
     }
