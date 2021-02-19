@@ -29,6 +29,18 @@
       "date": "2021-02-19T07:35:31.689Z",
       "important": false,
       "id": 5
+    },
+    {
+      "content": "trololo",
+      "date": "2021-02-19T08:08:59.153Z",
+      "important": true,
+      "id": 6
+    },
+    {
+      "content": "a new note...asd",
+      "date": "2021-02-19T08:16:07.729Z",
+      "important": true,
+      "id": 7
     }
   ]
 }
