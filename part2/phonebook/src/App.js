@@ -10,7 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [newSearch, setNewSearch] = useState("");
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState({ text: null, type: null });
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
@@ -33,8 +33,11 @@ const App = () => {
     if (!oldPerson) {
       personService.create(personObj).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
-        setErrorMessage(`Added ${returnedPerson.name}`);
-        setTimeout(() => setErrorMessage(null), 5000);
+        setErrorMessage({
+          text: `Added ${returnedPerson.name}`,
+          type: "success",
+        });
+        setTimeout(() => setErrorMessage({ text: null, type: null }), 5000);
         setNewName("");
         setNewNumber("");
       });
@@ -46,17 +49,18 @@ const App = () => {
       ) {
         personService.update(oldPerson.id, personObj).then((returnedPerson) => {
           if (returnedPerson.hasOwnProperty("message")) {
-            setErrorMessage(null)
-            setErrorMessage(returnedPerson.message);
-            setTimeout(() => setErrorMessage(null), 5000);
+            setErrorMessage({ text: null, type: null });
+            setErrorMessage({ text: returnedPerson.message, type: "error" });
+            setTimeout(() => setErrorMessage({ text: null, type: null }), 5000);
           } else {
             setPersons(
               persons.map((p) => (p.id !== oldPerson.id ? p : returnedPerson))
             );
-            setErrorMessage(
-              `${returnedPerson.name} phone number changed to ${returnedPerson.number}`
-            );
-            setTimeout(() => setErrorMessage(null), 5000);
+            setErrorMessage({
+              text: `${returnedPerson.name} phone number changed to ${returnedPerson.number}`,
+              type: "success",
+            });
+            setTimeout(() => setErrorMessage({ text: null, type: null }), 5000);
             setNewName("");
             setNewNumber("");
           }
@@ -90,7 +94,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={errorMessage} />
+      <Notification message={errorMessage.text} type={errorMessage.type} />
       <Filter filterHandler={handleSearchChange} value={newSearch} />
       <h3>Add a new</h3>
       <PersonForm
