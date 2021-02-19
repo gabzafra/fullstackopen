@@ -46,6 +46,18 @@ const App = () => {
     setNewSearch(event.target.value);
   };
 
+  const deletePerson = (id, name) => {
+    if (window.confirm(`Delete ${name} ?`)) {
+      personService.remove(id).then((status) => {
+        if (status === 200) {
+          setPersons(persons.filter((p) => p.id !== id));
+        } else {
+          alert(`Deletion of ${name} failed `);
+        }
+      });
+    }
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -59,7 +71,11 @@ const App = () => {
         submitHandler={addPerson}
       />
       <h2>Numbers</h2>
-      <Persons persons={persons} filter={newSearch} />
+      <Persons
+        persons={persons}
+        filter={newSearch}
+        deleteHandler={deletePerson}
+      />
     </div>
   );
 };
