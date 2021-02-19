@@ -18,21 +18,36 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault();
-    if (
-      persons.every((person) => person.name.localeCompare(newName.trim()) !== 0)
-    ) {
-      const personObj = {
-        name: newName,
-        number: newNumber,
-      };
+    
+    const personObj = {
+      name: newName.trim(),
+      number: newNumber.trim(),
+    };
 
+    const oldPerson = persons.find(
+      (person) => person.name.localeCompare(newName) === 0
+    );
+
+    if (!oldPerson) {
       personService.create(personObj).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
         setNewName("");
         setNewNumber("");
       });
     } else {
-      alert(`${newName} is already added to phonebook`);
+      if (
+        window.confirm(
+          `${newName} is already added to phonebook, replace the old number with a new one ?`
+        )
+      ) {
+        personService.update(oldPerson.id, personObj).then((returnedPerson) => {
+          setPersons(
+            persons.map((p) => (p.id !== oldPerson.id ? p : returnedPerson))
+          );
+          setNewName("");
+          setNewNumber("");
+        });
+      }
     }
   };
 
