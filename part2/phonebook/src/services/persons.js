@@ -16,7 +16,8 @@ const remove = (id) => {
 const update = (id, newObject) => {
   return axios
     .put(`${baseUrl}/${id}`, newObject)
-    .then((response) => response.data);
+    .then((response) => response.data)
+    .catch(error => ({message:`Information of ${newObject.name} has already been removed from server`}));
 };
 
 export default { getAll, create, remove, update };

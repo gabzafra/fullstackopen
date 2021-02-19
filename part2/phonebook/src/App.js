@@ -3,12 +3,14 @@ import personService from "./services/persons";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [newSearch, setNewSearch] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
@@ -18,7 +20,7 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault();
-    
+
     const personObj = {
       name: newName.trim(),
       number: newNumber.trim(),
@@ -31,6 +33,8 @@ const App = () => {
     if (!oldPerson) {
       personService.create(personObj).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
+        setErrorMessage(`Added ${returnedPerson.name}`);
+        setTimeout(() => setErrorMessage(null), 5000);
         setNewName("");
         setNewNumber("");
       });
@@ -41,11 +45,21 @@ const App = () => {
         )
       ) {
         personService.update(oldPerson.id, personObj).then((returnedPerson) => {
-          setPersons(
-            persons.map((p) => (p.id !== oldPerson.id ? p : returnedPerson))
-          );
-          setNewName("");
-          setNewNumber("");
+          if (returnedPerson.hasOwnProperty("message")) {
+            setErrorMessage(null)
+            setErrorMessage(returnedPerson.message);
+            setTimeout(() => setErrorMessage(null), 5000);
+          } else {
+            setPersons(
+              persons.map((p) => (p.id !== oldPerson.id ? p : returnedPerson))
+            );
+            setErrorMessage(
+              `${returnedPerson.name} phone number changed to ${returnedPerson.number}`
+            );
+            setTimeout(() => setErrorMessage(null), 5000);
+            setNewName("");
+            setNewNumber("");
+          }
         });
       }
     }
@@ -76,6 +90,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={errorMessage} />
       <Filter filterHandler={handleSearchChange} value={newSearch} />
       <h3>Add a new</h3>
       <PersonForm
