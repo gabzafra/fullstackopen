@@ -1,4 +1,4 @@
-const { response } = require("express");
+const { response, request } = require("express");
 const express = require("express");
 const app = express();
 
@@ -47,6 +47,10 @@ const persons = [
     id: 4,
   },
 ];
+
+app.get("/info", (request, response) => {
+    response.send(`<p>Phonebook has info for ${persons.length} people</p>${new Date}<p></p>`)
+})
 
 app.get("/api/persons", (request, response) => {
   response.json(persons);
