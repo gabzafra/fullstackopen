@@ -52,6 +52,18 @@ app.delete("/api/persons/:id", (request, response) => {
 app.post("/api/persons", (request, response) => {
   const { name, number } = request.body;
 
+  if (!name || !number) {
+    return response.status(400).json({
+      error: "content missing",
+    });
+  }
+
+  if (persons.some((person) => person.name === name)) {
+    return response.status(400).json({
+      error: `${name} already exist`,
+    });
+  }
+
   const person = {
     name: name,
     number: number,
