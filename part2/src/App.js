@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import noteService from "./services/notes";
 import Note from "./components/Note";
 import Notification from "./components/Notification";
+
 const Footer = () => {
   const footerStyle = {
     color: "green",
