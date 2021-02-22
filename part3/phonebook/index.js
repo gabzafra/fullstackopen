@@ -28,25 +28,40 @@ let persons = [
 ];
 
 app.get("/info", (request, response) => {
-    response.send(`<p>Phonebook has info for ${persons.length} people</p>${new Date}<p></p>`)
-})
+  response.send(
+    `<p>Phonebook has info for ${persons.length} people</p>${new Date()}<p></p>`
+  );
+});
 
 app.get("/api/persons", (request, response) => {
   response.json(persons);
 });
 
-app.get('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const person = persons.find(person => person.id === id)
-    person ? response.json(person) : response.status(404).end()
-    
-})
+app.get("/api/persons/:id", (request, response) => {
+  const id = Number(request.params.id);
+  const person = persons.find((person) => person.id === id);
+  person ? response.json(person) : response.status(404).end();
+});
 
-app.delete('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    persons = persons.filter(person => person.id !== id)
-    response.status(204).end()
-})
+app.delete("/api/persons/:id", (request, response) => {
+  const id = Number(request.params.id);
+  persons = persons.filter((person) => person.id !== id);
+  response.status(204).end();
+});
+
+app.post("/api/persons", (request, response) => {
+  const { name, number } = request.body;
+
+  const person = {
+    name: name,
+    number: number,
+    id: Math.floor(Math.random() * 1000000000),
+  };
+
+  persons = persons.concat(person);
+
+  response.json(person);
+});
 
 const PORT = 3001;
 app.listen(PORT, () => {
