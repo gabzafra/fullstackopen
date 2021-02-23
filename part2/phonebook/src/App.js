@@ -32,14 +32,22 @@ const App = () => {
 
     if (!oldPerson) {
       personService.create(personObj).then((returnedPerson) => {
-        setPersons(persons.concat(returnedPerson));
-        setErrorMessage({
-          text: `Added ${returnedPerson.name}`,
-          type: "success",
-        });
-        setTimeout(() => setErrorMessage({ text: null, type: null }), 5000);
-        setNewName("");
-        setNewNumber("");
+        if (!returnedPerson.message) {
+          setPersons(persons.concat(returnedPerson));
+          setErrorMessage({
+            text: `Added ${returnedPerson.name}`,
+            type: "success",
+          });
+          setTimeout(() => setErrorMessage({ text: null, type: null }), 5000);
+          setNewName("");
+          setNewNumber("");
+        } else {
+          setErrorMessage({
+            text: returnedPerson.message,
+            type: "error",
+          });
+          setTimeout(() => setErrorMessage({ text: null, type: null }), 5000);
+        }
       });
     } else {
       if (
@@ -47,6 +55,11 @@ const App = () => {
           `${newName} is already added to phonebook, replace the old number with a new one ?`
         )
       ) {
+
+
+        // TODO use a PUT to UPDATE <-----------------------------------------------------------------------!
+
+        
         personService.update(oldPerson.id, personObj).then((returnedPerson) => {
           if (returnedPerson.hasOwnProperty("message")) {
             setPersons(persons.filter((p) => p.id !== oldPerson.id));
@@ -83,12 +96,15 @@ const App = () => {
   const deletePerson = (id, name) => {
     if (window.confirm(`Delete ${name} ?`)) {
       personService.remove(id).then((status) => {
-        if (status === 200) {
+        if (status === 204) {
           setPersons(persons.filter((p) => p.id !== id));
         } else {
           setPersons(persons.filter((p) => p.id !== id));
           setErrorMessage({ text: null, type: null });
-          setErrorMessage({ text: `Information of ${name} has already been removed from server `, type: "error" });
+          setErrorMessage({
+            text: `Information of ${name} has already been removed from server `,
+            type: "error",
+          });
           setTimeout(() => setErrorMessage({ text: null, type: null }), 5000);
         }
       });

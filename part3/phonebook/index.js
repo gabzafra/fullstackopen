@@ -1,15 +1,21 @@
 const { response, request } = require("express");
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors");
 const app = express();
 
-morgan.token('postContent', (req,res)=> {
-  if(req.method === 'POST'){
-    return JSON.stringify(req.body)
+app.use(cors());
+morgan.token("postContent", (req, res) => {
+  if (req.method === "POST" || req.method === "PUT") {
+    return JSON.stringify(req.body);
   }
-  return null
-})
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :postContent' ));
+  return null;
+});
+app.use(
+  morgan(
+    ":method :url :status :res[content-length] - :response-time ms :postContent"
+  )
+);
 app.use(express.json());
 
 let persons = [
@@ -53,22 +59,24 @@ app.get("/api/persons/:id", (request, response) => {
 
 app.delete("/api/persons/:id", (request, response) => {
   const id = Number(request.params.id);
+  const initialPersons = persons.length;
+
   persons = persons.filter((person) => person.id !== id);
-  response.status(204).end();
+  
+  const statusCode = persons.length === initialPersons ? 404 : 204;
+  response.status(statusCode).end();
 });
 
 app.post("/api/persons", (request, response) => {
   const { name, number } = request.body;
 
   if (!name || !number) {
-    return response.status(400).json({
-      error: "content missing",
-    });
+    return response.status(400).send({ message: "content missing" });
   }
 
   if (persons.some((person) => person.name === name)) {
-    return response.status(400).json({
-      error: `${name} already exist`,
+    return response.status(400).send({
+      message: `${name} already exist`,
     });
   }
 
@@ -83,7 +91,10 @@ app.post("/api/persons", (request, response) => {
   response.json(person);
 });
 
-const PORT = process.env.PORT || 3001
+
+// TODO add PUT route to UPDATE phone numbers <----------------------------!!!
+
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
