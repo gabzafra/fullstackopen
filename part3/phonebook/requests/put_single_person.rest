@@ -1,0 +1,27 @@
+PUT http://localhost:3001/api/persons/1
+Content-Type: application/json
+
+{
+	"name": "Arto Hellas",
+	"number": "040-123456"
+}
+
+###
+
+PUT http://localhost:3001/api/persons/1
+Content-Type: application/json
+
+{
+	"name": "Arto Hellas",
+	"number": "0000000"
+}
+
+### Error when try access inexistent register
+
+PUT http://localhost:3001/api/persons/100
+Content-Type: application/json
+
+{
+	"name": "Out of range",
+	"number": "343434343"
+}

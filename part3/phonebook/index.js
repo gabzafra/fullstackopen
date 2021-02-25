@@ -62,7 +62,7 @@ app.delete("/api/persons/:id", (request, response) => {
   const initialPersons = persons.length;
 
   persons = persons.filter((person) => person.id !== id);
-  
+
   const statusCode = persons.length === initialPersons ? 404 : 204;
   response.status(statusCode).end();
 });
@@ -91,8 +91,24 @@ app.post("/api/persons", (request, response) => {
   response.json(person);
 });
 
+app.put("/api/persons/:id", (request, response) => {
+  const updatedPerson = {
+    name: request.body.name,
+    number: request.body.number,
+    id: Number(request.params.id),
+  };
 
-// TODO add PUT route to UPDATE phone numbers <----------------------------!!!
+  if (persons.some((person) => person.id === updatedPerson.id)) {
+    persons = persons.map((person) =>
+      person.id === updatedPerson.id ? updatedPerson : person
+    );
+    console.log("Update OK -->", persons);
+    return response.status(200).json(updatedPerson);
+  } else {
+    console.log("Update FAIL -->", persons);
+    return response.status(500).end();
+  }
+});
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
