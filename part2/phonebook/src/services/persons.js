@@ -27,11 +27,9 @@ const update = (id, newObject) => {
   return axios
     .put(`${baseUrl}/${id}`, newObject)
     .then((response) => {
-      console.log("response", response);
       return response.data;
     })
     .catch((error) => {
-      console.log("fk error", error);
       return {
         message: `Information of ${newObject.name} has already been removed from server`,
       };

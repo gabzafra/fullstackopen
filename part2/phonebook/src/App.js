@@ -55,11 +55,6 @@ const App = () => {
           `${newName} is already added to phonebook, replace the old number with a new one ?`
         )
       ) {
-
-
-        // TODO use a PUT to UPDATE <-----------------------------------------------------------------------!
-
-        
         personService.update(oldPerson.id, personObj).then((returnedPerson) => {
           if (returnedPerson.hasOwnProperty("message")) {
             setPersons(persons.filter((p) => p.id !== oldPerson.id));
